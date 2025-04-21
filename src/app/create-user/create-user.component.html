@@ -1,0 +1,43 @@
+<div class="container">
+    <form (ngSubmit)="dataForm()">
+        <!-- Row con 4 campos en 2 columnas -->
+        <!-- <div class="row"> -->
+        <!-- Columna 1, fila 1
+        <div class="col-6 mb-3">
+          <label for="id" class="form-label">Id</label>
+          <input
+            id="id"
+            name="id"
+            type="number"
+            class="form-control"
+            [(ngModel)]="formObj.id"
+          />
+        </div> -->
+
+        <!-- Columna 2, fila 1 -->
+        <div class="col-6 mb-3">
+            <label for="title" class="form-label">Name</label>
+            <input id="name" name="name" type="text" class="form-control" [(ngModel)]="formObj.name" />
+        </div>
+
+        <!-- Columna 1, fila 2 -->
+        <div class="col-6 mb-3">
+            <label class="form-label">Last name</label>
+            <textarea id="lastName" name="lastName" class="form-control" [(ngModel)]="formObj.lastName"></textarea>
+        </div>
+
+        <div class="col-6 mb-3">
+            <label for="age" class="form-label">Age</label>
+            <input id="age" name="age" type="number" class="form-control" [(ngModel)]="formObj.age" />
+
+            <!-- NUEVO CHECKBOX: -->
+            <div class="form-check mt-2">
+                <input class="form-check-input" type="checkbox" id="bold" name="bold" [(ngModel)]="formObj.bold" />
+                <label class="form-check-label" for="bold">
+                    Bold
+                </label>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Crear</button>
+    </form>
+</div>
