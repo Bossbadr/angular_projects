@@ -1,5 +1,5 @@
-import { Component, ModelFunction } from '@angular/core';
-import { FormsModule } from '@angular/forms'
+import { Component, ViewChild } from '@angular/core';
+import { FormsModule, NgForm } from '@angular/forms'
 import { User } from '../models/model.interface';
 import { CommonModule } from '@angular/common';
 import { DataService } from '../seriveces/data.service';
@@ -13,9 +13,11 @@ import { HttpResponse } from '@angular/common/http';
   templateUrl: './create-user.component.html',
   styleUrl: './create-user.component.scss'
 })
-export class CreateUserComponent {
+export class CreateUserComponent{
 
   constructor (private dataService: DataService, private route: Router) {}
+
+  @ViewChild('f') form!: NgForm;
 
   formObj: User = {
     id: null!,
@@ -26,6 +28,13 @@ export class CreateUserComponent {
   };
 
   dataForm(): void {
+
+    if (this.form.invalid) {
+      // Marcar todos como tocados para que muestren errores
+      this.form.control.markAllAsTouched();
+      return;
+    }
+
     this.dataService.addUser(this.formObj)
       .subscribe({
         next: (res: HttpResponse<User>) => {
