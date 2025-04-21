@@ -3,17 +3,30 @@
         <form #f="ngForm" (ngSubmit)="dataForm()">
             <div class="col-6 mb-3">
                 <label for="title" class="form-label">Name</label>
-                <input id="name" name="name" type="text" class="form-control" [(ngModel)]="formObj.name" required />
+                <input id="name" name="name" type="text" class="form-control" [(ngModel)]="formObj.name"
+                    #nameCtrl="ngModel" [class.is-invalid]="nameCtrl.invalid && nameCtrl.touched" required />
+                <div *ngIf="nameCtrl.invalid && nameCtrl.touched" class="invalid-feedback">
+                    El nombre es un campo obligatorio.
+                </div>
             </div>
 
             <div class="col-6 mb-3">
                 <label class="form-label">Last name</label>
-                <input id="lastName" name="lastName" class="form-control" [(ngModel)]="formObj.lastName" required />
+                <input id="lastName" name="lastName" class="form-control" [(ngModel)]="formObj.lastName" 
+                #nameCtrl="ngModel" [class.is-invalid]="nameCtrl.invalid && nameCtrl.touched" required />
+                <div *ngIf="nameCtrl.invalid && nameCtrl.touched" class="invalid-feedback">
+                    El Apellido es un campo obligatorio.
+                </div>
             </div>
 
             <div class="col-6 mb-3">
                 <label for="age" class="form-label">Age</label>
-                <input id="age" name="age" type="number" class="form-control" [(ngModel)]="formObj.age" required />
+                <input id="age" name="age" type="number" class="form-control" [(ngModel)]="formObj.age" 
+                #nameCtrl="ngModel" [class.is-invalid]="nameCtrl.invalid && nameCtrl.touched" required />
+
+                <div *ngIf="nameCtrl.invalid && nameCtrl.touched" class="invalid-feedback">
+                    La edad es un campo obligatorio.
+                </div>
 
                 <div class="form-check mt-2">
                     <input class="form-check-input" type="checkbox" id="bold" name="bold" [(ngModel)]="formObj.bold" />
@@ -22,11 +35,8 @@
                     </label>
                 </div>
             </div>
-            <button 
-                [disabled]="f.invalid"
-                type="submit" 
-                class="btn btn-primary">
-                    Crear
+            <button [disabled]="f.invalid" type="submit" class="btn btn-primary">
+                Crear
             </button>
         </form>
     </div>
