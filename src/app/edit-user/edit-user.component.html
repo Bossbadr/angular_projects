@@ -1,1 +1,43 @@
-<p>edit-user works!</p>
+<div class="wrapper">
+    <div class="form-container">
+        <form #f="ngForm" (ngSubmit)="dataForm()">
+            <div class="col-6 mb-3">
+                <label for="title" class="form-label">Name</label>
+                <input id="name" name="name" type="text" class="form-control" [(ngModel)]="formObj.name"
+                    #nameCtrl="ngModel" [class.is-invalid]="nameCtrl.invalid && nameCtrl.touched" required />
+                <div *ngIf="nameCtrl.invalid && nameCtrl.touched" class="invalid-feedback">
+                    El nombre es un campo obligatorio.
+                </div>
+            </div>
+
+            <div class="col-6 mb-3">
+                <label class="form-label">Last name</label>
+                <input id="lastName" name="lastName" class="form-control" [(ngModel)]="formObj.lastName"
+                    #lastNameCtrl="ngModel" [class.is-invalid]="lastNameCtrl.invalid && lastNameCtrl.touched" required />
+                <div *ngIf="lastNameCtrl.invalid && lastNameCtrl.touched" class="invalid-feedback">
+                    El Apellido es un campo obligatorio.
+                </div>
+            </div>
+
+            <div class="col-6 mb-3">
+                <label for="age" class="form-label">Age</label>
+                <input id="age" name="age" type="number" class="form-control" [(ngModel)]="formObj.age"
+                    #ageCtrl="ngModel" [class.is-invalid]="ageCtrl.invalid && ageCtrl.touched" required />
+
+                <div *ngIf="ageCtrl.invalid && ageCtrl.touched" class="invalid-feedback">
+                    La edad es un campo obligatorio.
+                </div>
+
+                <div class="form-check mt-2">
+                    <input class="form-check-input" type="checkbox" id="bold" name="bold" [(ngModel)]="formObj.bold" />
+                    <label class="form-check-label" for="bold">
+                        Bold
+                    </label>
+                </div>
+            </div>
+            <button [disabled]="f.invalid" type="submit" class="btn btn-primary">
+                Editar
+            </button>
+        </form>
+    </div>
+</div>

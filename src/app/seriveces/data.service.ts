@@ -56,14 +56,11 @@ export class DataService {
     );
   }
 
-  deleteItem(id: number): Observable<HttpResponse<void>> {
+  deleteUser(id: number): Observable<HttpResponse<void>> {
     return this.http.delete<void>(`${this.apiUrl}/users/${id}`, {observe: 'response'})
     .pipe(
       catchError(this.handleError)
     )
   }
-
-
-
 
 }

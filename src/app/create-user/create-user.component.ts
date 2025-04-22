@@ -3,7 +3,7 @@ import { FormsModule, NgForm } from '@angular/forms'
 import { User } from '../models/model.interface';
 import { CommonModule } from '@angular/common';
 import { DataService } from '../seriveces/data.service';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { HttpResponse } from '@angular/common/http';
 
 @Component({
@@ -13,6 +13,7 @@ import { HttpResponse } from '@angular/common/http';
   templateUrl: './create-user.component.html',
   styleUrl: './create-user.component.scss'
 })
+
 export class CreateUserComponent{
 
   constructor (private dataService: DataService, private route: Router) {}
