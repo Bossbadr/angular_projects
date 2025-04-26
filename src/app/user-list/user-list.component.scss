@@ -1,3 +1,50 @@
-#btns {
-    white-space: nowrap;
+// #btns {
+//     white-space: nowrap;
+// }
+
+.container {
+    padding-top: 2%;
 }
+
+:host ::ng-deep .card {
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  }
+
+.avatar_img {
+    display: block;
+    margin: 0 auto;
+    padding-bottom: 4%;
+}
+
+/* CSS propio para ordenar y dimensionar los filtros */
+.filter-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+  }
+  
+  /* Limitar ancho del buscador */
+  .filter-container .form-control {
+    max-width: 250px;
+  }
+  
+  /* Ajustar ancho del select */
+  .filter-container .form-select {
+    max-width: 150px;
+  }
+  
+  /* Slider de edad con etiqueta */
+  .range-slider {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  /* Opcional: estilos para que el span muestre bien el rango */
+  .range-slider #ageValue {
+    min-width: 50px;
+    text-align: center;
+    font-size: 0.9rem;
+  }

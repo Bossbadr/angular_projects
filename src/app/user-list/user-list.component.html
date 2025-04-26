@@ -1,34 +1,51 @@
 <div class="container">
-
-    <h2>Users list: </h2>
-
-    <div>
-        <button class="btn btn-success" routerLink="/createUser">Create User</button>
+    <div class="d-flex justify-content-between align-items-center mb-3 mb-2">
+        <h2>Users list:</h2>
+        <button class="btn btn-success fixed-btn" routerLink="/createUser">Create User</button>
     </div>
+    <div class="filter-container d-flex flex-wrap align-items-center mb-4 gap-3">
+        <!-- Buscador por nombre -->
+        <div class="d-flex flex-column">
+            <label class="form-label mb-1">Nombre: </label>
+            <input type="text" class="form-control" placeholder="Buscar por nombre..." aria-label="Buscar por nombre">
+        </div>
 
-    <table class="table table-striped">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">Id</th>
-                <th scope="col">Name</th>
-                <th scope="col">Last Name</th>
-                <th scope="col">Age</th>
-                <th scope="col">Bold</th>
-                <th scope="col">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let user of arrayUsers">
-                <td>{{ user.id }}</td>
-                <td>{{ user.name }}</td>
-                <td>{{ user.lastName }}</td>
-                <td>{{ user.age }}</td>
-                <td>{{ user.bold }}</td>
-                <td id="btns">
-                    <button class="btn btn-primary btn-sm"  routerLink="/editUser" (click)="editUser(user)">Editar</button>
-                    <button class="btn btn-danger btn-sm" (click)="deleteUser(user)">Eliminar</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+        <!-- Filtro por bold -->
+        <div class="d-flex flex-column">
+            <label class="form-label mb-1">Bold: </label>
+            <select class="form-select w-auto" aria-label="Filtrar por Bold">
+                <option value="">Todos</option>
+                <option value="true">Bold</option>
+                <option value="false">No Bold</option>
+            </select>
+        </div>
+
+        <!-- Filtro rango de fechas -->
+        <div class="d-flex flex-column">
+            <label for="fechaInicio" class="form-label mb-1">Fecha de nacimiento: </label>
+            <div class="d-flex gap-2">
+                <input type="date" id="fechaInicio" class="form-control" aria-label="Fecha inicio">
+                <input type="date" id="fechaFin" class="form-control" aria-label="Fecha fin">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6 col-md-4 col-lg-3 mb-4" *ngFor="let user of arrayUsers">
+            <div class="card h-100">
+                <div class="card-body">
+                    <img src="assets/imagen_usuario.png" alt="avatar" width="30%" height="45%" class="avatar_img">
+                    <p class="card-title"><strong>Nombre: </strong>{{ user.name }} {{ user.lastName }}</p>
+                    <p class="card-text"><strong>Age: </strong> {{ user.age }}</p>
+                    <p class="card-text"><strong>Bold: </strong> {{ user.bold }}</p>
+                </div>
+                <div class="card-footer d-flex justify-content-center">
+                    <button class="btn btn-primary btn-sm" (click)="editUser(user)">
+                        Editar
+                    </button>
+                    <button class="btn btn-danger btn-sm" (click)="deleteUser(user)">
+                        Eliminar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
