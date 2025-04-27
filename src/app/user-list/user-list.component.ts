@@ -6,39 +6,87 @@ import { RouterLink } from '@angular/router';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
-
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-post-list',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule, FormsModule],
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.scss'
 })
-export class UserListComponent implements OnInit, OnDestroy {
+export class UserListComponent implements OnInit {
 
-  arrayUsers: User[] = []; 
-  filteresArray: User[] = [];
+  filterForm!: FormGroup;
+  allUsers: User[] = [];       // usuarios sin filtrar
+  displayedUsers: User[] = []; // usuarios que se pintan en la plantilla
 
-  constructor (private dataService: DataService, private router: Router) {}
+  constructor (private dataService: DataService, private router: Router, private formbuilder: FormBuilder) {
+    this.initiateForm();
+  }
 
   ngOnInit(): void {
 
-    this.dataService.getUsers()
-    .subscribe({
+    // 1) Cargo los usuarios una sola vez
+    this.dataService.getUsers().subscribe({
       next: (response: HttpResponse<User[]>) => {
-        console.log(`Status Code: ${response.status}`);
-        this.arrayUsers = response.body ?? [];
+        this.allUsers = response.body ?? [];
+        this.displayedUsers = [...this.allUsers];
       },
-      error: (error: HttpErrorResponse) => {
-        console.error(`Error recibido en el componente: ${error}`);
-        this.arrayUsers = [];
+      error: () => {
+        this.allUsers = [];
+        this.displayedUsers = [];
       }
+    });
+
+    // Cuando utilizas el valueChanges te cambia la visualizacion de forma automatica sin
+    // tener que clickar al boton de filtrar
+    this.filterForm.valueChanges
+      .pipe(debounceTime(200))   // para no disparar filtro en cada pulsación
+      .subscribe(() => this.filterUser());
+
+  }
+
+  initiateForm() {
+    this.filterForm = this.formbuilder.group({
+      name: [''],
+      bold: [''],
+      ageMin: [null],
+      ageMax: [null]
     })
   }
 
-  ngOnDestroy(): void {
+  filterUser(){
 
+    const { name, bold, ageMin, ageMax } = this.filterForm.value;
+
+    this.displayedUsers = this.allUsers.filter(user => {
+
+        let matches = true;
+
+        // Filtro para el nombre:
+        if (name && name.trim() !== '') { // Compramos el nombre y el nombre sin espacios con el trim()
+            matches = matches
+            && user.name.toLowerCase()
+            .includes(name.trim().toLowerCase());
+        }
+        
+        // Filtro para el bold:
+        if (bold && bold !== '') {
+          matches = matches && String(user.bold) === String(bold);
+        }
+
+        // Filtro para la edad
+        if (ageMin != null && ageMax != null) {
+          matches = matches && user.age >= ageMin && user.age <= ageMax;
+        }
+        
+        return matches;
+
+    });
   }
+  
+  
 
   editUser(user: User): void {
     console.log(`Editar este post ${user.id}`)
@@ -73,7 +121,7 @@ export class UserListComponent implements OnInit, OnDestroy {
 
           // Genera una nueva array solo si la funcion que se le pasa deveulve un true
           // En este caso es que el id del usuario no sea igual al que se acaba de eliminar
-          this.arrayUsers = this.arrayUsers.filter(u => u.id !== user.id);
+          this.displayedUsers = this.displayedUsers.filter(u => u.id !== user.id);
         },
         error: err => {
           Swal.fire('Error', 'No se pudo eliminar al usuario.', 'error');
@@ -85,3 +133,4 @@ export class UserListComponent implements OnInit, OnDestroy {
   }
 
 }
+

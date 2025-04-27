@@ -34,17 +34,7 @@
   .filter-container .form-select {
     max-width: 150px;
   }
-  
-  /* Slider de edad con etiqueta */
-  .range-slider {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  
-  /* Opcional: estilos para que el span muestre bien el rango */
-  .range-slider #ageValue {
-    min-width: 50px;
-    text-align: center;
-    font-size: 0.9rem;
+
+  .row {
+    padding-top: 2%;
   }

@@ -3,34 +3,41 @@
         <h2>Users list:</h2>
         <button class="btn btn-success fixed-btn" routerLink="/createUser">Create User</button>
     </div>
-    <div class="filter-container d-flex flex-wrap align-items-center mb-4 gap-3">
-        <!-- Buscador por nombre -->
-        <div class="d-flex flex-column">
-            <label class="form-label mb-1">Nombre: </label>
-            <input type="text" class="form-control" placeholder="Buscar por nombre..." aria-label="Buscar por nombre">
-        </div>
 
-        <!-- Filtro por bold -->
-        <div class="d-flex flex-column">
-            <label class="form-label mb-1">Bold: </label>
-            <select class="form-select w-auto" aria-label="Filtrar por Bold">
-                <option value="">Todos</option>
-                <option value="true">Bold</option>
-                <option value="false">No Bold</option>
-            </select>
-        </div>
+    <form [formGroup]="filterForm" (ngSubmit)="filterUser()" class="filter-container d-flex flex-wrap align-items-end gap-3">
 
-        <!-- Filtro rango de fechas -->
         <div class="d-flex flex-column">
-            <label for="fechaInicio" class="form-label mb-1">Fecha de nacimiento: </label>
-            <div class="d-flex gap-2">
-                <input type="date" id="fechaInicio" class="form-control" aria-label="Fecha inicio">
-                <input type="date" id="fechaFin" class="form-control" aria-label="Fecha fin">
-            </div>
+          <label class="form-label mb-1">Nombre:</label>
+          <input formControlName="name" 
+            type="text" 
+            class="form-control" 
+            placeholder="Buscar por nombre">
         </div>
-    </div>
+      
+        <div class="d-flex flex-column">
+          <label class="form-label mb-1">Bold:</label>
+          <select formControlName="bold" class="form-select w-auto">
+            <option value="">Todos</option>
+            <option value="true">Bold</option>
+            <option value="false">No Bold</option>
+          </select>
+        </div>
+      
+        <div class="d-flex flex-column">
+          <label class="form-label mb-1">Edad (min–max):</label>
+          <div class="d-flex gap-2">
+            <input formControlName="ageMin" type="number" class="form-control" min="0" max="100">
+            <input formControlName="ageMax" type="number" class="form-control" min="0" max="100">
+          </div>
+        </div>
+      
+        <!-- <button type="submit" class="btn btn-primary btn-fixed-height ms-3">
+          Filtrar
+        </button> -->
+    </form>
+    
     <div class="row">
-        <div class="col-sm-6 col-md-4 col-lg-3 mb-4" *ngFor="let user of arrayUsers">
+        <div class="col-sm-6 col-md-4 col-lg-3 mb-4" *ngFor="let user of displayedUsers">
             <div class="card h-100">
                 <div class="card-body">
                     <img src="assets/imagen_usuario.png" alt="avatar" width="30%" height="45%" class="avatar_img">

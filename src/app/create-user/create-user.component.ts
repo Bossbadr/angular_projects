@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { DataService } from '../seriveces/data.service';
 import { Router } from '@angular/router';
 import { HttpResponse } from '@angular/common/http';
+import Swal from 'sweetalert2';
+
 
 @Component({
   standalone: true,
@@ -14,9 +16,9 @@ import { HttpResponse } from '@angular/common/http';
   styleUrl: './create-user.component.scss'
 })
 
-export class CreateUserComponent{
+export class CreateUserComponent {
 
-  constructor (private dataService: DataService, private route: Router) {}
+  constructor(private dataService: DataService, private route: Router) { }
 
   @ViewChild('f') form!: NgForm;
 
@@ -42,10 +44,31 @@ export class CreateUserComponent{
           console.log(`Status Code: ${res.status}`);
           console.log(`Response Body: ${res.body}`);
 
-          this.route.navigate(['/listUsers']);
+          Swal.fire({
+            toast: true,
+            position: 'bottom',
+            icon: 'success',
+            title: 'Usuario creado correctamente',
+            showConfirmButton: false,
+            timer: 2500
+          });
+
+          setTimeout(() => {
+            this.route.navigate(['/listUsers']);
+          }, 300);
+
         },
         error: err => {
-          console.error(`Error al crear el post: ${err.message}`)
+          Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'error',
+            title: 'Error al crear usuario',
+            text: err.message,
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true
+          });
         }
       })
   }
