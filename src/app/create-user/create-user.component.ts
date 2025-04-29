@@ -22,6 +22,8 @@ export class CreateUserComponent {
 
   @ViewChild('f') form!: NgForm;
 
+  isSubmitting = false;
+
   formObj: User = {
     id: null!,
     name: '',
@@ -29,6 +31,13 @@ export class CreateUserComponent {
     age: null!,
     bold: false,
   };
+
+  onCancel(event :Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+    console.log("Clickado el boton de cancelar !!");
+    this.route.navigate(['/listUsers']);
+  }
 
   dataForm(): void {
 
@@ -38,39 +47,50 @@ export class CreateUserComponent {
       return;
     }
 
-    this.dataService.addUser(this.formObj)
-      .subscribe({
-        next: (res: HttpResponse<User>) => {
-          console.log(`Status Code: ${res.status}`);
-          console.log(`Response Body: ${res.body}`);
+    console.log(this.isSubmitting)
 
-          Swal.fire({
-            toast: true,
-            position: 'bottom',
-            icon: 'success',
-            title: 'Usuario creado correctamente',
-            showConfirmButton: false,
-            timer: 2500
-          });
+    if (this.isSubmitting === false) {
 
-          setTimeout(() => {
-            this.route.navigate(['/listUsers']);
-          }, 300);
+      this.isSubmitting = true;
+      
+      this.dataService.addUser(this.formObj)
+        .subscribe({
+          next: (res: HttpResponse<User>) => {
+            console.log(`Status Code: ${res.status}`);
+            console.log(`Response Body: ${res.body}`);
 
-        },
-        error: err => {
-          Swal.fire({
-            toast: true,
-            position: 'top-end',
-            icon: 'error',
-            title: 'Error al crear usuario',
-            text: err.message,
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true
-          });
-        }
-      })
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              icon: 'success',
+              title: 'User created successfully',
+              showConfirmButton: false,
+              timer: 2500
+            });
+
+            setTimeout(() => {
+              this.route.navigate(['/listUsers']);
+            }, 200);
+
+          },
+          error: err => {
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              icon: 'error',
+              title: 'Error to create user',
+              text: err.message,
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true
+            });
+          }
+        })
+
+      console.log(this.isSubmitting)
+    }
   }
+
+  
 
 }

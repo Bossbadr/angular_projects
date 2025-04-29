@@ -8,18 +8,31 @@ import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime } from 'rxjs';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { ExportUserComponent } from '../export-user/export-user.component'
+
 
 @Component({
   selector: 'app-post-list',
-  imports: [CommonModule, RouterLink, ReactiveFormsModule, FormsModule],
+  imports: [
+    CommonModule, 
+    RouterLink, 
+    ReactiveFormsModule, 
+    FormsModule, 
+    NgxPaginationModule,
+    ExportUserComponent
+  ],
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.scss'
 })
+
 export class UserListComponent implements OnInit {
 
   filterForm!: FormGroup;
   allUsers: User[] = [];       // usuarios sin filtrar
-  displayedUsers: User[] = []; // usuarios que se pintan en la plantilla
+  displayedUsers: User[] = []; // usuarios que se cargaran en el html para mostrarse en la pagina
+  page: number = 1;
+  pageSize: number = 8;
 
   constructor (private dataService: DataService, private router: Router, private formbuilder: FormBuilder) {
     this.initiateForm();
@@ -58,6 +71,10 @@ export class UserListComponent implements OnInit {
 
   filterUser(){
 
+    // Volver siempre a la pagina 1 ya que sino se queda una inconsistencia de datos
+    // Al hacer el pipe (|) en el html para la paginación
+    this.page = 1;
+
     const { name, bold, ageMin, ageMax } = this.filterForm.value;
 
     this.displayedUsers = this.allUsers.filter(user => {
@@ -86,8 +103,6 @@ export class UserListComponent implements OnInit {
     });
   }
   
-  
-
   editUser(user: User): void {
     console.log(`Editar este post ${user.id}`)
 
@@ -100,12 +115,12 @@ export class UserListComponent implements OnInit {
     console.log(`Eliminar este post ${user}`)
 
     Swal.fire({
-      title: '¿Estás seguro?',
-      text: `Vas a eliminar al usuario "${user.name}"`,
+      title: 'Are you sure?',
+      text: `You are going to delete the user "${user.name}"`,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Eliminar',
-      cancelButtonText: 'Cancelar'
+      confirmButtonText: 'Delete',
+      cancelButtonText: 'Cancel'
     }).then(result => {
       
       if (!result.isConfirmed) return;
@@ -117,14 +132,14 @@ export class UserListComponent implements OnInit {
           console.log(`Status Code: ${res.status}`);
           console.log(`Response Body: ${res.body}`);
 
-          Swal.fire('¡Eliminado!', 'El usuario ha sido borrado.', 'success');
+          Swal.fire('Deleted!', 'The user has been deleted.', 'success');
 
           // Genera una nueva array solo si la funcion que se le pasa deveulve un true
           // En este caso es que el id del usuario no sea igual al que se acaba de eliminar
           this.displayedUsers = this.displayedUsers.filter(u => u.id !== user.id);
         },
         error: err => {
-          Swal.fire('Error', 'No se pudo eliminar al usuario.', 'error');
+          Swal.fire('Error', 'Failed to delete the user.', 'error');
           console.error(err);
         }
       })

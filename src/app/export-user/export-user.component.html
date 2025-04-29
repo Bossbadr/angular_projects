@@ -1,0 +1,10 @@
+<mat-form-field appearance="outline">
+    <mat-label>Export formats</mat-label>
+    <mat-select
+      placeholder="Selecciona formato"
+      required
+      [(value)]="selectedFormat">
+      <mat-option value="json">JSON</mat-option>
+      <mat-option value="csv">CSV</mat-option>
+    </mat-select>
+  </mat-form-field>
